@@ -21,6 +21,7 @@ export default AppInput;
 
 const styles = StyleSheet.create({
   inputStyle: {
+    fontSize: 16,
     marginTop: 10,
     paddingLeft: 10,
     borderWidth: 0.5,
