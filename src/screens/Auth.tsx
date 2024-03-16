@@ -43,10 +43,10 @@ const Auth = (navigation: any) => {
       )}
 
       <LoadingButton
-        lbl={hooks.tabName === "login" ? "Login" : "Sign Up"}
         loading={hooks.loading}
         onPress={hooks.handleLoginSignUp}
         btnStyle={styles.loginButtonLabel}
+        lbl={hooks.tabName === "login" ? "Login" : "Sign Up"}
       />
 
       <AppButton

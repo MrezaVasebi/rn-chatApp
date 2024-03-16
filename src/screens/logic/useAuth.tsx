@@ -1,3 +1,4 @@
+import auth from "@react-native-firebase/auth";
 import { Utility } from "classes";
 import { useEffect, useState } from "react";
 
@@ -30,8 +31,49 @@ export const useAuth = (navigation: any) => {
   const handleLoginSignUp = () => {
     if (utility.validateFields(email)) {
       if (utility.validateFields(password)) {
-        if (tabName === "login") handleLogin();
-        else if (tabName === "signUp") handleSignUp();
+        if (tabName === "login") {
+          setLoading(true);
+          handleLogin().then((res) => {
+            if (res) {
+              setMsgStatus("success");
+              setMsg("User logged in.");
+
+              setEmail("");
+              setPassword("");
+
+              setLoading(false);
+
+              setTimeout(() => {}, 1500);
+            } else {
+              setLoading(false);
+              setMsg("User not found.");
+            }
+          });
+        } else if (tabName === "signUp") {
+          setLoading(true);
+          handleSignUp().then((response) => {
+            if (response.status) {
+              setMsg(response.msg);
+
+              setEmail("");
+              setPassword("");
+
+              setLoading(false);
+
+              setTimeout(() => {}, 1500);
+            } else {
+              setLoading(false);
+
+              if (response.msg === "auth/email-already-in-use") {
+                setMsg("That email address is already in use!");
+              }
+
+              if (response.msg === "auth/invalid-email") {
+                setMsg("That email address is invalid!");
+              }
+            }
+          });
+        }
       } else {
         setMsg("Error in password.");
       }
@@ -40,24 +82,45 @@ export const useAuth = (navigation: any) => {
     }
   };
 
-  const handleLogin = () => {
+  const handleLogin = async (): Promise<boolean> => {
+    let status: boolean = false;
     try {
-      setLoading(true);
+      await auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          status = true;
+        })
+        .catch((error: any) => {
+          status = false;
+        });
     } catch (error) {
-      utility.logValue("error 47: ", error);
-    } finally {
-      setLoading(false);
+      status = false;
     }
+
+    return status;
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async (): Promise<{
+    status: boolean;
+    msg: string;
+  }> => {
+    let errMsg: string = "";
+    let status: boolean = false;
     try {
-      setLoading(true);
+      await auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          status = true;
+          errMsg = "User account created & signed in!";
+        })
+        .catch((error) => {
+          errMsg = error.code;
+        });
     } catch (error) {
-      utility.logValue("error: 57", error);
-    } finally {
-      setLoading(false);
+      errMsg = "Error in creating user";
     }
+
+    return { status, msg: errMsg };
   };
 
   const handleTabName = (value: "login" | "signUp") => {
