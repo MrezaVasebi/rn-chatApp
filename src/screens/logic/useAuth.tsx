@@ -1,9 +1,12 @@
-import auth from "@react-native-firebase/auth";
 import { Utility } from "classes";
 import { useEffect, useState } from "react";
+import { PropsAuth } from "../AuthStack";
 
-export const useAuth = (navigation: any) => {
+import auth from "@react-native-firebase/auth";
+
+export const useAuth = (props: PropsAuth) => {
   const utility = new Utility();
+  let { navigation, route } = props;
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -53,6 +56,7 @@ export const useAuth = (navigation: any) => {
           setLoading(true);
           handleSignUp().then((response) => {
             if (response.status) {
+              setMsgStatus("success");
               setMsg(response.msg);
 
               setEmail("");
@@ -60,7 +64,9 @@ export const useAuth = (navigation: any) => {
 
               setLoading(false);
 
-              setTimeout(() => {}, 1500);
+              setTimeout(() => {
+                navigation.navigate("Groups");
+              }, 1500);
             } else {
               setLoading(false);
 
@@ -109,7 +115,8 @@ export const useAuth = (navigation: any) => {
     try {
       await auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => {
+        .then((response) => {
+          console.log({ response });
           status = true;
           errMsg = "User account created & signed in!";
         })

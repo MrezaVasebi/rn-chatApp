@@ -4,10 +4,11 @@ import { AppInput } from "@/components/inputs";
 import { AppText } from "@/components/texts";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { PropsAuth } from "./AuthStack";
 import { useAuth } from "./logic";
 
-const Auth = (navigation: any) => {
-  const hooks = useAuth(navigation);
+const Auth = (props: PropsAuth) => {
+  const hooks = useAuth(props);
 
   return (
     <MainScreen rootStyle={styles.container}>
