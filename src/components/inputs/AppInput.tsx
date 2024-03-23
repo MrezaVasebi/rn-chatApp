@@ -10,6 +10,7 @@ let { height, width } = Dimensions.get("window");
 const AppInput = (props: TextInputProps & { inputStyle?: object }) => {
   return (
     <TextInput
+      value={props.value}
       placeholder={props.placeholder}
       onChangeText={props.onChangeText}
       secureTextEntry={props.secureTextEntry}

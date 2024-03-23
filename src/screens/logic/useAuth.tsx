@@ -46,7 +46,9 @@ export const useAuth = (props: PropsAuth) => {
 
               setLoading(false);
 
-              setTimeout(() => {}, 1500);
+              setTimeout(() => {
+                navigation.navigate('Groups')
+              }, 1500);
             } else {
               setLoading(false);
               setMsg("User not found.");

@@ -14,7 +14,7 @@ export default MainScreen;
 const styles = StyleSheet.create({
   rootStyle: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#F5F5F5",
     paddingTop: StatusBar.currentHeight,
   },
 });
