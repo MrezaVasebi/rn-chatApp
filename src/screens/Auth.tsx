@@ -4,6 +4,7 @@ import { AppInput } from "@/components/inputs";
 import { AppText } from "@/components/texts";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { appColors } from "utility";
 import { PropsAuth } from "./AuthStack";
 import { useAuth } from "./logic";
 
@@ -38,7 +39,8 @@ const Auth = (props: PropsAuth) => {
           lbl={hooks.msg}
           lblStyle={{
             marginBottom: 15,
-            color: hooks.msgStatus === "error" ? "red" : "green",
+            color:
+              hooks.msgStatus === "error" ? appColors.red : appColors.green,
           }}
         />
       )}

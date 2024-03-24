@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TouchableOpacityProps,
 } from "react-native";
+import { appColors } from "utility";
 import { AppText } from "../texts";
 
 const LoadingButton = (
@@ -22,7 +23,7 @@ const LoadingButton = (
       style={{ ...styles.btnStyle, ...props.btnStyle }}
     >
       {props.loading ? (
-        <ActivityIndicator size={"small"} color={"black"} />
+        <ActivityIndicator size={"small"} color={appColors.purple} />
       ) : (
         <AppText lbl={props.lbl} lblStyle={{ ...props.lblStyle }} />
       )}
