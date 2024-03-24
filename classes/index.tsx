@@ -1,2 +1,2 @@
-export * from "./FireStore";
+export * from "./Firestore";
 export * from "./Utility";

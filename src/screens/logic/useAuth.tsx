@@ -98,12 +98,8 @@ export const useAuth = (props: PropsAuth) => {
         .then(() => {
           status = true;
         })
-        .catch((error: any) => {
-          status = false;
-        });
-    } catch (error) {
-      status = false;
-    }
+        .catch((error: any) => {});
+    } catch (error) {}
 
     return status;
   };
@@ -112,24 +108,34 @@ export const useAuth = (props: PropsAuth) => {
     status: boolean;
     msg: string;
   }> => {
-    let errMsg: string = "";
-    let status: boolean = false;
+    let result: { msg: string; status: boolean } = {
+      msg: "",
+      status: false,
+    };
     try {
       await auth()
         .createUserWithEmailAndPassword(email, password)
         .then((response) => {
           // console.log({ response });
-          status = true;
-          errMsg = "User account created & signed in!";
+          result = {
+            msg: "User account created & signed in!",
+            status: true,
+          };
         })
         .catch((error) => {
-          errMsg = error.code;
+          result = {
+            msg: error.code,
+            status: false,
+          };
         });
     } catch (error) {
-      errMsg = "Error in creating user";
+      result = {
+        status: false,
+        msg: "Error in creating user",
+      };
     }
 
-    return { status, msg: errMsg };
+    return result;
   };
 
   const handleTabName = (value: "login" | "signUp") => {

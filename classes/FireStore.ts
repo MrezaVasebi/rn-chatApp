@@ -9,7 +9,7 @@ interface IResult {
 
 /** Reference: https://rnfirebase.io/firestore/usage */
 
-export class Firebase {
+export class Firestore {
   private _result: IResult = {
     msg: "",
     status: false,
