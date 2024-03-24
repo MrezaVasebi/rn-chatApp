@@ -18,7 +18,7 @@ const Auth = (props: PropsAuth) => {
       <View>
         <AppText lbl="Email" />
         <AppInput
-          value={hooks.email}
+          value={hooks.fields.email}
           placeholder="Enter email"
           onChangeText={(value) => hooks.handleInput(value, "email")}
         />
@@ -27,40 +27,44 @@ const Auth = (props: PropsAuth) => {
       <View style={{ marginVertical: 15 }}>
         <AppText lbl="Password" />
         <AppInput
-          value={hooks.password}
+          value={hooks.fields.password}
           secureTextEntry={true}
           placeholder="Enter password"
           onChangeText={(value) => hooks.handleInput(value, "password")}
         />
       </View>
 
-      {hooks.msg.length !== 0 && (
+      {hooks.fields.msg.length !== 0 && (
         <AppText
-          lbl={hooks.msg}
+          lbl={hooks.fields.msg}
           lblStyle={{
             marginBottom: 15,
             color:
-              hooks.msgStatus === "error" ? appColors.red : appColors.green,
+              hooks.fields.msgStatus === "error"
+                ? appColors.red
+                : appColors.green,
           }}
         />
       )}
 
       <LoadingButton
-        loading={hooks.loading}
+        loading={hooks.fields.loading}
         onPress={hooks.handleLoginSignUp}
         btnStyle={styles.loginButtonLabel}
-        lbl={hooks.tabName === "login" ? "Login" : "Sign Up"}
+        lbl={hooks.fields.tabName === "login" ? "Login" : "Sign Up"}
       />
 
       <AppButton
         lbl={
-          hooks.tabName === "login"
+          hooks.fields.tabName === "login"
             ? "Do not have an account? Signup."
             : "Have an account. Login"
         }
         lblStyle={styles.navButtonText}
         onPress={() =>
-          hooks.handleTabName(hooks.tabName === "login" ? "signUp" : "login")
+          hooks.handleTabName(
+            hooks.fields.tabName === "login" ? "signUp" : "login"
+          )
         }
       />
     </MainScreen>

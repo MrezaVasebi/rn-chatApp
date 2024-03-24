@@ -47,7 +47,7 @@ export const useAuth = (props: PropsAuth) => {
               setLoading(false);
 
               setTimeout(() => {
-                navigation.navigate('Groups')
+                navigation.navigate("Groups");
               }, 1500);
             } else {
               setLoading(false);
@@ -118,7 +118,7 @@ export const useAuth = (props: PropsAuth) => {
       await auth()
         .createUserWithEmailAndPassword(email, password)
         .then((response) => {
-          console.log({ response });
+          // console.log({ response });
           status = true;
           errMsg = "User account created & signed in!";
         })
@@ -136,15 +136,19 @@ export const useAuth = (props: PropsAuth) => {
     setTabName(value);
   };
 
-  return {
+  let fields = {
+    msg,
+    email,
     tabName,
+    loading,
+    password,
+    msgStatus,
+  };
+
+  return {
+    fields,
     handleTabName,
     handleInput,
     handleLoginSignUp,
-    loading,
-    msg,
-    msgStatus,
-    email,
-    password,
   };
 };
