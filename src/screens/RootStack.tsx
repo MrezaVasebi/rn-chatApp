@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { AppText } from "@/components/texts";
 import React from "react";
+import ChatScreen from "./ChatScreen";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import UserProfile from "./UserProfile";
@@ -13,6 +14,10 @@ export type RootStackParamList = {
   Users: undefined;
   SignUp: undefined;
   UserProfile: undefined;
+  ChatScreen: {
+    selectedName: string;
+    selectedUid: string;
+  };
 };
 
 export type PropsLogin = NativeStackScreenProps<RootStackParamList, "Login">;
@@ -20,6 +25,11 @@ export type PropsLogin = NativeStackScreenProps<RootStackParamList, "Login">;
 export type PropsSignUp = NativeStackScreenProps<RootStackParamList, "SignUp">;
 
 export type PropsUsers = NativeStackScreenProps<RootStackParamList, "Users">;
+
+export type PropsChatScree = NativeStackScreenProps<
+  RootStackParamList,
+  "ChatScreen"
+>;
 
 export type PropsUserProfile = NativeStackScreenProps<
   RootStackParamList,
@@ -62,6 +72,8 @@ export default function RootStack() {
       />
 
       <Stack.Screen name="Users" component={Users} />
+
+      <Stack.Screen name="ChatScreen" component={ChatScreen} />
 
       <Stack.Screen
         name="UserProfile"

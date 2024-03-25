@@ -68,7 +68,7 @@ const SignUp = (props: PropsSignUp) => {
 
       <View style={{ alignItems: "center" }}>
         <LoadingButton
-          lbl={"Signup"}
+          lbl={"Sign Up"}
           onPress={hooks.handleSignUp}
           loading={hooks.fields.loading}
           btnStyle={styles.signUpStyle}

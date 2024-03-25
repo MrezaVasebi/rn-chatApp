@@ -50,8 +50,8 @@ const Login = (props: PropsLogin) => {
       <View style={{ alignItems: "center", marginTop: 10 }}>
         <LoadingButton
           lbl={"Login"}
+          onPress={hooks.handleLogin}
           loading={hooks.fields.loading}
-          onPress={hooks.handleLoginSignUp}
           btnStyle={styles.loginButtonLabel}
           lblStyle={{ color: appColors.white }}
         />

@@ -34,7 +34,7 @@ export const useLogin = (props: PropsLogin) => {
     else if (identifier === "password") setPassword(value);
   };
 
-  const handleLoginSignUp = () => {
+  const handleLogin = async () => {
     let isValid = true;
     let fields = { email, password };
     for (const key in fields) {
@@ -50,37 +50,26 @@ export const useLogin = (props: PropsLogin) => {
       return;
     } else {
       setLoading(true);
-      handleLogin().then((res) => {
-        if (res) {
-          handleMsgAndStatus("User logged in.", "success");
+      try {
+        await auth()
+          .signInWithEmailAndPassword(email, password)
+          .then(() => {
+            handleMsgAndStatus("User logged in.", "success");
 
-          clearFieldValue();
+            clearFieldValue();
 
-          setLoading(false);
-
-          setTimeout(() => {
-            navigation.navigate("Users");
-          }, 1500);
-        } else {
-          setLoading(false);
-          handleMsgAndStatus("User not found.");
-        }
-      });
+            setTimeout(() => {
+              navigation.navigate("Users");
+            }, 1500);
+          })
+          .catch((error: any) => {
+            handleMsgAndStatus("User not found.");
+          });
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
     }
-  };
-
-  const handleLogin = async (): Promise<boolean> => {
-    let status: boolean = false;
-    try {
-      await auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(() => {
-          status = true;
-        })
-        .catch((error: any) => {});
-    } catch (error) {}
-
-    return status;
   };
 
   function clearFieldValue() {
@@ -107,6 +96,6 @@ export const useLogin = (props: PropsLogin) => {
   return {
     fields,
     handleInput,
-    handleLoginSignUp,
+    handleLogin,
   };
 };

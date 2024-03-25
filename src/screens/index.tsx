@@ -1,3 +1,4 @@
+import ChatScreen from "./ChatScreen";
 import FinalNav from "./FinalNav";
 import LoadingModal from "./LoadingModal";
 import Login from "./Login";
@@ -7,10 +8,11 @@ import UserProfile from "./UserProfile";
 import Users from "./Users";
 
 export {
-  RootStack as AuthStack,
+  ChatScreen,
   FinalNav,
   LoadingModal,
   Login,
+  RootStack,
   SignUp,
   UserProfile,
   Users,

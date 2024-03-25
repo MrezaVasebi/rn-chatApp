@@ -7,7 +7,7 @@ import { PropsUsers } from "../RootStack";
 export const useUsers = (props: PropsUsers) => {
   const { navigation, route } = props;
 
-  const currentUser = auth().currentUser;
+  const loggedInUser = auth().currentUser;
   const firestoreIns = new Firestore();
 
   const [users, setUsers] = useState<
@@ -58,7 +58,7 @@ export const useUsers = (props: PropsUsers) => {
     let others = [];
     if (users.length !== 0) {
       for (const iterator of users) {
-        if (iterator.id !== currentUser?.uid) others.push(iterator);
+        if (iterator.id !== loggedInUser?.uid) others.push(iterator);
       }
 
       setLoading(false);

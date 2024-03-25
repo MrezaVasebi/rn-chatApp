@@ -52,7 +52,12 @@ const Users = (props: PropsUsers) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               activeOpacity={0.5}
-              onPress={() => {}}
+              onPress={() =>
+                props.navigation.navigate("ChatScreen", {
+                  selectedName: item.data()?.name,
+                  selectedUid: item.data()?.name,
+                })
+              }
               style={styles.cardStyle}
             >
               <View style={styles.mainStyle}>
