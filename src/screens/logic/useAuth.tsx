@@ -179,7 +179,7 @@ export const useAuth = (props: PropsAuth) => {
 
   function handleNavigation() {
     setTimeout(() => {
-      navigation.navigate("Groups");
+      navigation.navigate("Users");
     }, 1500);
   }
 

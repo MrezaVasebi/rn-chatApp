@@ -1,4 +1,4 @@
+import Loading from "./Loading";
 import MainScreen from "./MainScreen";
 
-export { MainScreen };
-
+export { Loading, MainScreen };
