@@ -23,14 +23,12 @@ export default AppInput;
 
 const styles = StyleSheet.create({
   inputStyle: {
+    height: 45,
     fontSize: 16,
-    marginTop: 10,
+    marginTop: 8,
     paddingLeft: 10,
+    borderRadius: 5,
     borderWidth: 0.5,
-    marginBottom: 10,
-    borderRadius: 10,
-    width: width / 1.5,
-    height: height / 20,
     fontFamily: "myFont",
   },
 });

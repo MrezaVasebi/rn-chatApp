@@ -11,7 +11,7 @@ export default AppText;
 
 const styles = StyleSheet.create({
   lblStyle: {
-    fontSize: 17,
+    fontSize: 15,
     fontFamily: "myFont",
   },
 });
