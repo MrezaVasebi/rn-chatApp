@@ -5,29 +5,15 @@ import { AppText } from "@/components/texts";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { appColors } from "utility";
-import { PropsAuth } from "./AuthStack";
-import { useAuth } from "./logic";
+import { useLogin } from "./logic";
+import { PropsLogin } from "./RootStack";
 
-const Auth = (props: PropsAuth) => {
-  const hooks = useAuth(props);
+const Login = (props: PropsLogin) => {
+  const hooks = useLogin(props);
 
   return (
     <MainScreen rootStyle={styles.container}>
-      <AppText
-        lblStyle={styles.titleText}
-        lbl={hooks.fields.tabName === "login" ? "Login" : "Sign Up"}
-      />
-
-      {hooks.fields.tabName === "signUp" && (
-        <View style={{ marginTop: 10 }}>
-          <AppText lbl="Name" />
-          <AppInput
-            value={hooks.fields.name}
-            placeholder="Enter name"
-            onChangeText={(value) => hooks.handleInput(value, "name")}
-          />
-        </View>
-      )}
+      <AppText lblStyle={styles.titleText} lbl={"Login"} />
 
       <View style={{ marginVertical: 10 }}>
         <AppText lbl="Email" />
@@ -63,31 +49,26 @@ const Auth = (props: PropsAuth) => {
 
       <View style={{ alignItems: "center", marginTop: 10 }}>
         <LoadingButton
+          lbl={"Login"}
           loading={hooks.fields.loading}
           onPress={hooks.handleLoginSignUp}
           btnStyle={styles.loginButtonLabel}
-          lbl={hooks.fields.tabName === "login" ? "Login" : "Sign Up"}
+          lblStyle={{ color: appColors.white }}
         />
 
+        <AppText lbl="Or" lblStyle={{ color: appColors.grey, marginTop: 20 }} />
+
         <AppButton
-          lbl={
-            hooks.fields.tabName === "login"
-              ? "Do not have an account? Signup."
-              : "Have an account. Login"
-          }
-          lblStyle={styles.navButtonText}
-          onPress={() =>
-            hooks.handleTabName(
-              hooks.fields.tabName === "login" ? "signUp" : "login"
-            )
-          }
+          lbl={"Sign Up"}
+          lblStyle={styles.btnText}
+          onPress={() => props.navigation.navigate("SignUp")}
         />
       </View>
     </MainScreen>
   );
 };
 
-export default Auth;
+export default Login;
 
 const styles = StyleSheet.create({
   container: {
@@ -101,15 +82,15 @@ const styles = StyleSheet.create({
   },
   loginButtonLabel: {
     height: 45,
-    width: "25%",
-    fontSize: 22,
+    padding: 10,
     borderRadius: 5,
-    borderWidth: 0.5,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: appColors.purple,
   },
-  navButtonText: {
+  btnText: {
     fontSize: 20,
     marginTop: 15,
+    color: appColors.purple,
   },
 });

@@ -1,15 +1,17 @@
-import Auth from "./Auth";
-import AuthStack from "./AuthStack";
 import FinalNav from "./FinalNav";
 import LoadingModal from "./LoadingModal";
+import Login from "./Login";
+import RootStack from "./RootStack";
+import SignUp from "./SignUp";
 import UserProfile from "./UserProfile";
 import Users from "./Users";
 
 export {
-  Auth,
-  AuthStack,
+  RootStack as AuthStack,
   FinalNav,
-  Users as Groups,
   LoadingModal,
+  Login,
+  SignUp,
   UserProfile,
+  Users,
 };

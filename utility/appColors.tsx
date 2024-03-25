@@ -4,5 +4,6 @@ export const appColors = {
   black: "black",
   white: "white",
   green: "green",
+  orange: "orange",
   purple: "purple",
 };

@@ -23,7 +23,7 @@ const LoadingButton = (
       style={{ ...styles.btnStyle, ...props.btnStyle }}
     >
       {props.loading ? (
-        <ActivityIndicator size={"small"} color={appColors.purple} />
+        <ActivityIndicator size={"small"} color={appColors.white} />
       ) : (
         <AppText lbl={props.lbl} lblStyle={{ ...props.lblStyle }} />
       )}

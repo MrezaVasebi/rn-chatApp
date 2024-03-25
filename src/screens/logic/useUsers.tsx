@@ -1,23 +1,18 @@
 import auth from "@react-native-firebase/auth";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
-import { Firestore, Utility } from "classes";
+import { Firestore } from "classes";
 import { useEffect, useState } from "react";
-import { PropsUsers } from "../AuthStack";
+import { PropsUsers } from "../RootStack";
 
 export const useUsers = (props: PropsUsers) => {
   const { navigation, route } = props;
 
   const currentUser = auth().currentUser;
-
-  const utility = new Utility();
   const firestoreIns = new Firestore();
 
   const [users, setUsers] = useState<
     FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>[]
   >([]);
-
-  const [groupName, setGroupName] = useState<string>("");
-  const [groupPanel, setGroupPanel] = useState<boolean>(false);
 
   const [msg, setMsg] = useState<string>("");
   const [msgStatus, setMsgStatus] = useState<"success" | "error">("error");
@@ -45,7 +40,7 @@ export const useUsers = (props: PropsUsers) => {
       .signOut()
       .then((response) => {
         // utility.logValue("response in logging out: ", response);
-        navigation.replace("Auth");
+        navigation.replace("Login");
       })
       .catch((err) => {
         // utility.logValue("logout error 37: ", err);
@@ -53,10 +48,6 @@ export const useUsers = (props: PropsUsers) => {
       .finally(() => {
         setShowLoadingModal(false);
       });
-  };
-
-  const handleGroupPanel = (value: boolean) => {
-    setGroupPanel(value);
   };
 
   const getAllUsers = async () => {
@@ -80,15 +71,11 @@ export const useUsers = (props: PropsUsers) => {
     users,
     loading,
     msgStatus,
-    groupName,
-    groupPanel,
     showLoadingModal,
   };
 
   return {
     fields,
-    setGroupName,
-    handleGroupPanel,
     handleLogout,
   };
 };

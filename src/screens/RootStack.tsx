@@ -3,17 +3,21 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { AppText } from "@/components/texts";
 import React from "react";
-import Auth from "./Auth";
+import Login from "./Login";
+import SignUp from "./SignUp";
 import UserProfile from "./UserProfile";
 import Users from "./Users";
 
 export type RootStackParamList = {
-  Auth: undefined;
+  Login: undefined;
   Users: undefined;
+  SignUp: undefined;
   UserProfile: undefined;
 };
 
-export type PropsAuth = NativeStackScreenProps<RootStackParamList, "Auth">;
+export type PropsLogin = NativeStackScreenProps<RootStackParamList, "Login">;
+
+export type PropsSignUp = NativeStackScreenProps<RootStackParamList, "SignUp">;
 
 export type PropsUsers = NativeStackScreenProps<RootStackParamList, "Users">;
 
@@ -24,7 +28,7 @@ export type PropsUserProfile = NativeStackScreenProps<
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export default function AuthStack() {
+export default function RootStack() {
   // const [isUserExisted, setIsUserExisted] = useState<boolean>(false);
 
   // useEffect(() => {
@@ -41,11 +45,24 @@ export default function AuthStack() {
 
   return (
     <Stack.Navigator
-      initialRouteName="Auth"
+      initialRouteName="Login"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Auth" component={Auth} />
+      <Stack.Screen name="Login" component={Login} />
+
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{
+          headerShown: false,
+          // headerTitle: () => {
+          //   return <AppText lbl="Signup" />;
+          // },
+        }}
+      />
+
       <Stack.Screen name="Users" component={Users} />
+
       <Stack.Screen
         name="UserProfile"
         component={UserProfile}

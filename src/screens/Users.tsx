@@ -1,13 +1,13 @@
-import { Loading, MainScreen } from "@/components";
+import { Loading, MainScreen, NoData } from "@/components";
 import { AppText } from "@/components/texts";
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import React, { useLayoutEffect } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { appColors } from "utility";
-import { PropsUsers } from "./AuthStack";
 import LoadingModal from "./LoadingModal";
 import { useUsers } from "./logic";
+import { PropsUsers } from "./RootStack";
 
 const Users = (props: PropsUsers) => {
   const hooks = useUsers(props);
@@ -42,6 +42,8 @@ const Users = (props: PropsUsers) => {
     <MainScreen rootStyle={styles.rootStyle}>
       {hooks.fields.loading ? (
         <Loading />
+      ) : hooks.fields.users.length === 0 ? (
+        <NoData />
       ) : (
         <FlatList
           data={hooks.fields.users}

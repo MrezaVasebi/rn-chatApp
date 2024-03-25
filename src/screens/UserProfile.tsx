@@ -3,7 +3,7 @@ import { AppText } from "@/components/texts";
 import auth from "@react-native-firebase/auth";
 import React from "react";
 import { View } from "react-native";
-import { PropsUserProfile } from "./AuthStack";
+import { PropsUserProfile } from "./RootStack";
 
 const UserProfile = (props: PropsUserProfile) => {
   let { navigation, route } = props;
