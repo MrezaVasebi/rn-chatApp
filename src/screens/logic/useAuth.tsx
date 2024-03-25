@@ -1,15 +1,19 @@
-import { Utility } from "classes";
+import { Firestore, Utility } from "classes";
 import { useEffect, useState } from "react";
 import { PropsAuth } from "../AuthStack";
 
 import auth from "@react-native-firebase/auth";
 
 export const useAuth = (props: PropsAuth) => {
-  const utility = new Utility();
   let { navigation, route } = props;
 
+  const utility = new Utility();
+  const firestoreIns = new Firestore();
+
+  const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
   const [loading, setLoading] = useState<boolean>(false);
 
   const [msg, setMsg] = useState<string>("");
@@ -26,67 +30,67 @@ export const useAuth = (props: PropsAuth) => {
     }
   }, [msg]);
 
-  const handleInput = (value: string, identifier: "email" | "password") => {
+  const handleInput = (
+    value: string,
+    identifier: "email" | "password" | "name"
+  ) => {
     if (identifier === "email") setEmail(value);
     else if (identifier === "password") setPassword(value);
+    else if (identifier === "name") setName(value);
   };
 
   const handleLoginSignUp = () => {
-    if (utility.validateFields(email)) {
-      if (utility.validateFields(password)) {
-        if (tabName === "login") {
-          setLoading(true);
-          handleLogin().then((res) => {
-            if (res) {
-              setMsgStatus("success");
-              setMsg("User logged in.");
-
-              setEmail("");
-              setPassword("");
-
-              setLoading(false);
-
-              setTimeout(() => {
-                navigation.navigate("Groups");
-              }, 1500);
-            } else {
-              setLoading(false);
-              setMsg("User not found.");
-            }
-          });
-        } else if (tabName === "signUp") {
-          setLoading(true);
-          handleSignUp().then((response) => {
-            if (response.status) {
-              setMsgStatus("success");
-              setMsg(response.msg);
-
-              setEmail("");
-              setPassword("");
-
-              setLoading(false);
-
-              setTimeout(() => {
-                navigation.navigate("Groups");
-              }, 1500);
-            } else {
-              setLoading(false);
-
-              if (response.msg === "auth/email-already-in-use") {
-                setMsg("That email address is already in use!");
-              }
-
-              if (response.msg === "auth/invalid-email") {
-                setMsg("That email address is invalid!");
-              }
-            }
-          });
-        }
-      } else {
-        setMsg("Error in password.");
+    let isValid = true;
+    let fields = { ...(tabName === "signUp" && { name }), email, password };
+    for (const key in fields) {
+      if (!utility.validateFields(fields[key as keyof typeof fields])) {
+        isValid = false;
       }
+
+      if (!isValid) break;
+    }
+
+    if (!isValid) {
+      handleMsgAndStatus("Some input value is wrong.");
+      return;
     } else {
-      setMsg("Error in email address.");
+      setLoading(true);
+      if (tabName === "login") {
+        handleLogin().then((res) => {
+          if (res) {
+            handleMsgAndStatus("User logged in.", "success");
+
+            clearFieldValue();
+
+            setLoading(false);
+
+            handleNavigation();
+          } else {
+            setLoading(false);
+            handleMsgAndStatus("User not found.");
+          }
+        });
+      } else if (tabName === "signUp") {
+        handleSignUp().then((response) => {
+          if (response.status) {
+            handleMsgAndStatus(response.msg, "success");
+
+            clearFieldValue();
+
+            setLoading(false);
+
+            handleNavigation();
+          } else {
+            setLoading(false);
+
+            if (response.msg === "auth/email-already-in-use")
+              handleMsgAndStatus("That email address is already in use!");
+
+            if (response.msg === "auth/invalid-email")
+              handleMsgAndStatus("That email address is invalid!");
+          }
+        });
+      }
     }
   };
 
@@ -115,12 +119,28 @@ export const useAuth = (props: PropsAuth) => {
     try {
       await auth()
         .createUserWithEmailAndPassword(email, password)
-        .then((response) => {
+        .then(async (response) => {
           // console.log({ response });
-          result = {
-            msg: "User account created & signed in!",
-            status: true,
-          };
+          const user = response.user;
+          await firestoreIns
+            .onCreateCollectionWithDocId("users", user.uid, {
+              name: name,
+              email: user.email,
+              userId: user.uid,
+            })
+            .then((response) => {
+              if (response.status) {
+                result = {
+                  msg: "User account created & signed in!",
+                  status: true,
+                };
+              } else {
+                result = {
+                  msg: "User account not created!",
+                  status: false,
+                };
+              }
+            });
         })
         .catch((error) => {
           result = {
@@ -140,10 +160,32 @@ export const useAuth = (props: PropsAuth) => {
 
   const handleTabName = (value: "login" | "signUp") => {
     setTabName(value);
+    clearFieldValue();
   };
+
+  function clearFieldValue() {
+    setName("");
+    setEmail("");
+    setPassword("");
+  }
+
+  function handleMsgAndStatus(
+    msg: string,
+    status: "error" | "success" = "error"
+  ) {
+    setMsg(msg);
+    setMsgStatus(status);
+  }
+
+  function handleNavigation() {
+    setTimeout(() => {
+      navigation.navigate("Groups");
+    }, 1500);
+  }
 
   let fields = {
     msg,
+    name,
     email,
     tabName,
     loading,

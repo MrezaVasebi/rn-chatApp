@@ -13,9 +13,23 @@ const Auth = (props: PropsAuth) => {
 
   return (
     <MainScreen rootStyle={styles.container}>
-      <AppText lblStyle={styles.titleText} lbl="Welcome!" />
+      <AppText
+        lblStyle={styles.titleText}
+        lbl={hooks.fields.tabName === "login" ? "Login" : "Sign Up"}
+      />
 
-      <View>
+      {hooks.fields.tabName === "signUp" && (
+        <View style={{ marginTop: 10 }}>
+          <AppText lbl="Name" />
+          <AppInput
+            value={hooks.fields.name}
+            placeholder="Enter name"
+            onChangeText={(value) => hooks.handleInput(value, "name")}
+          />
+        </View>
+      )}
+
+      <View style={{ marginVertical: 10 }}>
         <AppText lbl="Email" />
         <AppInput
           value={hooks.fields.email}
@@ -24,7 +38,7 @@ const Auth = (props: PropsAuth) => {
         />
       </View>
 
-      <View style={{ marginVertical: 15 }}>
+      <View style={{ marginBottom: 10 }}>
         <AppText lbl="Password" />
         <AppInput
           value={hooks.fields.password}
@@ -38,7 +52,7 @@ const Auth = (props: PropsAuth) => {
         <AppText
           lbl={hooks.fields.msg}
           lblStyle={{
-            marginBottom: 15,
+            marginBottom: 10,
             color:
               hooks.fields.msgStatus === "error"
                 ? appColors.red
@@ -47,26 +61,28 @@ const Auth = (props: PropsAuth) => {
         />
       )}
 
-      <LoadingButton
-        loading={hooks.fields.loading}
-        onPress={hooks.handleLoginSignUp}
-        btnStyle={styles.loginButtonLabel}
-        lbl={hooks.fields.tabName === "login" ? "Login" : "Sign Up"}
-      />
+      <View style={{ alignItems: "center", marginTop: 10 }}>
+        <LoadingButton
+          loading={hooks.fields.loading}
+          onPress={hooks.handleLoginSignUp}
+          btnStyle={styles.loginButtonLabel}
+          lbl={hooks.fields.tabName === "login" ? "Login" : "Sign Up"}
+        />
 
-      <AppButton
-        lbl={
-          hooks.fields.tabName === "login"
-            ? "Do not have an account? Signup."
-            : "Have an account. Login"
-        }
-        lblStyle={styles.navButtonText}
-        onPress={() =>
-          hooks.handleTabName(
-            hooks.fields.tabName === "login" ? "signUp" : "login"
-          )
-        }
-      />
+        <AppButton
+          lbl={
+            hooks.fields.tabName === "login"
+              ? "Do not have an account? Signup."
+              : "Have an account. Login"
+          }
+          lblStyle={styles.navButtonText}
+          onPress={() =>
+            hooks.handleTabName(
+              hooks.fields.tabName === "login" ? "signUp" : "login"
+            )
+          }
+        />
+      </View>
     </MainScreen>
   );
 };
@@ -76,18 +92,18 @@ export default Auth;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
-    alignItems: "center",
+    paddingHorizontal: 20,
   },
   titleText: {
-    fontSize: 30,
-    marginBottom: 10,
+    fontSize: 45,
+    marginBottom: 15,
+    color: appColors.purple,
   },
   loginButtonLabel: {
     height: 45,
     width: "25%",
     fontSize: 22,
-    borderRadius: 10,
+    borderRadius: 5,
     borderWidth: 0.5,
     alignItems: "center",
     justifyContent: "center",
