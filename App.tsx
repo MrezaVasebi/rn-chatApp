@@ -1,4 +1,5 @@
 import { FinalNav } from "@/screens";
+import { UserProvider } from "context-api";
 import { useFonts } from "expo-font";
 
 export default function App() {
@@ -8,5 +9,9 @@ export default function App() {
 
   if (!loaded) return null;
 
-  return <FinalNav />;
+  return (
+    <UserProvider>
+      <FinalNav />
+    </UserProvider>
+  );
 }

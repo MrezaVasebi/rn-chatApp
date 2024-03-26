@@ -10,7 +10,7 @@ import { useUsers } from "./logic";
 import { PropsUsers } from "./RootStack";
 
 const Users = (props: PropsUsers) => {
-  const hooks = useUsers(props);
+  const hooks = useUsers();
   let { navigation, route } = props;
 
   useLayoutEffect(() => {

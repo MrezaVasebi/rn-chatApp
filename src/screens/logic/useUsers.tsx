@@ -1,14 +1,14 @@
 import auth from "@react-native-firebase/auth";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { Firestore } from "classes";
-import { useEffect, useState } from "react";
-import { PropsUsers } from "../RootStack";
+import { UserContext } from "context-api";
+import { useContext, useEffect, useState } from "react";
 
-export const useUsers = (props: PropsUsers) => {
-  const { navigation, route } = props;
+export const useUsers = () => {
+  const userCtx = useContext(UserContext);
 
-  const loggedInUser = auth().currentUser;
   const firestoreIns = new Firestore();
+  const loggedInUser = auth().currentUser;
 
   const [users, setUsers] = useState<
     FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>[]
@@ -40,7 +40,10 @@ export const useUsers = (props: PropsUsers) => {
       .signOut()
       .then((response) => {
         // utility.logValue("response in logging out: ", response);
-        navigation.replace("Login");
+        // navigation.replace("Login");
+
+        // set 'null' to user in context
+        userCtx.handleSetUser(null);
       })
       .catch((err) => {
         // utility.logValue("logout error 37: ", err);

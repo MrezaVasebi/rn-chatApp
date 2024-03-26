@@ -1,13 +1,15 @@
 import { Utility } from "classes";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PropsLogin } from "../RootStack";
 
 import auth from "@react-native-firebase/auth";
+import { UserContext } from "context-api";
 
 export const useLogin = (props: PropsLogin) => {
   let { navigation, route } = props;
 
   const utility = new Utility();
+  const userCtx = useContext(UserContext);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -53,10 +55,13 @@ export const useLogin = (props: PropsLogin) => {
       try {
         await auth()
           .signInWithEmailAndPassword(email, password)
-          .then(() => {
+          .then((response) => {
             handleMsgAndStatus("User logged in.", "success");
 
             clearFieldValue();
+
+            // set user in context
+            userCtx.handleSetUser(response.user);
 
             setTimeout(() => {
               navigation.navigate("Users");
