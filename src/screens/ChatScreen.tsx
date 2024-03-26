@@ -83,7 +83,6 @@ const ChatScreen = (props: PropsChatScree) => {
         .orderBy("createdAt", "desc")
         .get();
 
-
       if (msgResponse.size !== 0) {
         const allMsgs = msgResponse.docs.map((docSnap) => {
           return {
