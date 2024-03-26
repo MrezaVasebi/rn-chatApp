@@ -2,9 +2,11 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { AppText } from "@/components/texts";
+import auth from "@react-native-firebase/auth";
 import { UserContext } from "context-api";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ChatScreen from "./ChatScreen";
+import LoadingModal from "./LoadingModal";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import UserProfile from "./UserProfile";
@@ -40,14 +42,31 @@ export type PropsUserProfile = NativeStackScreenProps<
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default function RootStack() {
-  const userCtx = useContext(UserContext);
+  const { user, handleSetUser } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const unsubscribeAuth = auth().onAuthStateChanged(
+      async (authenticatedUser) => {
+        authenticatedUser
+          ? handleSetUser(authenticatedUser)
+          : handleSetUser(null);
+        setIsLoading(false);
+      }
+    );
+
+    // unsubscribe auth listener on unmount
+    return unsubscribeAuth;
+  }, [user]);
+
+  if (isLoading) return <LoadingModal />;
 
   return (
     <Stack.Navigator
       initialRouteName="Login"
       screenOptions={{ headerShown: false }}
     >
-      {!userCtx.user ? (
+      {!user ? (
         <>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen

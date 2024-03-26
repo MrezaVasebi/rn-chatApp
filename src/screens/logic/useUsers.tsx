@@ -35,21 +35,20 @@ export const useUsers = () => {
   }, [msg]);
 
   const handleLogout = async () => {
-    setShowLoadingModal(true);
+    // setShowLoadingModal(true);
     await auth()
       .signOut()
       .then((response) => {
         // utility.logValue("response in logging out: ", response);
         // navigation.replace("Login");
-
         // set 'null' to user in context
-        userCtx.handleSetUser(null);
+        // userCtx.handleSetUser(null);
       })
       .catch((err) => {
         // utility.logValue("logout error 37: ", err);
       })
       .finally(() => {
-        setShowLoadingModal(false);
+        // setShowLoadingModal(false);
       });
   };
 
