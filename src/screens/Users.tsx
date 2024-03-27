@@ -1,11 +1,10 @@
 import { Loading, MainScreen, NoData } from "@/components";
 import { AppText } from "@/components/texts";
-import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 import React, { useLayoutEffect } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { appColors } from "utility";
-import LoadingModal from "./LoadingModal";
 import { useUsers } from "./logic";
 import { PropsUsers } from "./RootStack";
 
@@ -19,15 +18,14 @@ const Users = (props: PropsUsers) => {
         return (
           <View style={styles.headerLeftStyle}>
             <TouchableOpacity
-              style={{ marginRight: 15 }}
               onPress={() => navigation.navigate("UserProfile")}
             >
               <MaterialIcons name="account-circle" size={25} color={"black"} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={hooks.handleLogout}>
+            {/* <TouchableOpacity onPress={hooks.handleLogout}>
               <AntDesign name="logout" size={20} color={appColors.red} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         );
       },
@@ -77,8 +75,6 @@ const Users = (props: PropsUsers) => {
           )}
         />
       )}
-
-      {hooks.fields.showLoadingModal && <LoadingModal />}
     </MainScreen>
   );
 };

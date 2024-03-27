@@ -9,7 +9,7 @@ import { useLogin } from "./logic";
 import { PropsLogin } from "./RootStack";
 
 const Login = (props: PropsLogin) => {
-  const hooks = useLogin(props);
+  const hooks = useLogin();
 
   return (
     <MainScreen rootStyle={styles.container}>
@@ -39,10 +39,7 @@ const Login = (props: PropsLogin) => {
           lbl={hooks.fields.msg}
           lblStyle={{
             marginBottom: 10,
-            color:
-              hooks.fields.msgStatus === "error"
-                ? appColors.red
-                : appColors.green,
+            color: appColors.red,
           }}
         />
       )}

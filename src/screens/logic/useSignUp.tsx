@@ -13,13 +13,11 @@ export const useSignUp = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [msg, setMsg] = useState<string>("");
-  const [msgStatus, setMsgStatus] = useState<"error" | "success">("error");
 
   useEffect(() => {
     if (msg.length !== 0) {
       setTimeout(() => {
         setMsg("");
-        setMsgStatus("error");
       }, 1500);
     }
   }, [msg]);
@@ -45,7 +43,7 @@ export const useSignUp = () => {
     }
 
     if (!isValid) {
-      handleMsgAndStatus("Some input value is wrong.");
+      setMsg("Some input value is wrong.");
       return;
     } else {
       setLoading(true);
@@ -62,42 +60,26 @@ export const useSignUp = () => {
                 userId: user.uid,
               })
               .then((res) => {
-                clearFieldValue();
-
-                handleMsgAndStatus("User account created.", "success");
+                setMsg("User account created.");
               })
               .catch((err) => {
-                handleMsgAndStatus("User account not created!");
+                setMsg("User account not created!");
               });
           })
           .catch((error) => {
             if (error.code === "auth/email-already-in-use")
-              handleMsgAndStatus("That email address is already in use!");
+              setMsg("That email address is already in use!");
 
             if (error.code === "auth/invalid-email")
-              handleMsgAndStatus("That email address is invalid!");
+              setMsg("That email address is invalid!");
           });
       } catch (error) {
-        console.log("70: ", error);
+        // console.log("70: ", error);
       } finally {
         setLoading(false);
       }
     }
   };
-
-  function clearFieldValue() {
-    setName("");
-    setEmail("");
-    setPassword("");
-  }
-
-  function handleMsgAndStatus(
-    msg: string,
-    status: "error" | "success" = "error"
-  ) {
-    setMsg(msg);
-    setMsgStatus(status);
-  }
 
   let fields = {
     msg,
@@ -105,7 +87,6 @@ export const useSignUp = () => {
     email,
     loading,
     password,
-    msgStatus,
   };
 
   return {

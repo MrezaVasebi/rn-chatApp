@@ -58,10 +58,7 @@ const SignUp = (props: PropsSignUp) => {
           lbl={hooks.fields.msg}
           lblStyle={{
             marginBottom: 10,
-            color:
-              hooks.fields.msgStatus === "error"
-                ? appColors.red
-                : appColors.green,
+            color: appColors.red,
           }}
         />
       )}

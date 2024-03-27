@@ -1,29 +1,21 @@
 import { Utility } from "classes";
-import { useContext, useEffect, useState } from "react";
-import { PropsLogin } from "../RootStack";
+import { useEffect, useState } from "react";
 
 import auth from "@react-native-firebase/auth";
-import { UserContext } from "context-api";
 
-export const useLogin = (props: PropsLogin) => {
-  let { navigation, route } = props;
-
+export const useLogin = () => {
   const utility = new Utility();
-  const userCtx = useContext(UserContext);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const [loading, setLoading] = useState<boolean>(false);
-
   const [msg, setMsg] = useState<string>("");
-  const [msgStatus, setMsgStatus] = useState<"error" | "success">("error");
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (msg.length !== 0) {
       setTimeout(() => {
         setMsg("");
-        setMsgStatus("error");
       }, 1500);
     }
   }, [msg]);
@@ -48,7 +40,7 @@ export const useLogin = (props: PropsLogin) => {
     }
 
     if (!isValid) {
-      handleMsgAndStatus("Some input value is wrong.");
+      setMsg("Some input value is wrong.");
       return;
     } else {
       setLoading(true);
@@ -56,19 +48,10 @@ export const useLogin = (props: PropsLogin) => {
         await auth()
           .signInWithEmailAndPassword(email, password)
           .then((response) => {
-            handleMsgAndStatus("User logged in.", "success");
-
-            clearFieldValue();
-
-            // set user in context
-            userCtx.handleSetUser(response.user);
-
-            setTimeout(() => {
-              navigation.navigate("Users");
-            }, 1500);
+            // console.log("User logged in.", response);
           })
           .catch((error: any) => {
-            handleMsgAndStatus("User not found.");
+            setMsg("User not found.");
           });
       } catch (error) {
       } finally {
@@ -77,25 +60,11 @@ export const useLogin = (props: PropsLogin) => {
     }
   };
 
-  function clearFieldValue() {
-    setEmail("");
-    setPassword("");
-  }
-
-  function handleMsgAndStatus(
-    msg: string,
-    status: "error" | "success" = "error"
-  ) {
-    setMsg(msg);
-    setMsgStatus(status);
-  }
-
   let fields = {
     msg,
     email,
     loading,
     password,
-    msgStatus,
   };
 
   return {

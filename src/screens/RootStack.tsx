@@ -43,9 +43,10 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 export default function RootStack() {
   const { user, handleSetUser } = useContext(UserContext);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    setIsLoading(true);
     const unsubscribeAuth = auth().onAuthStateChanged(
       async (authenticatedUser) => {
         authenticatedUser

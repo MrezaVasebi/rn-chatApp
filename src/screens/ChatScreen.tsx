@@ -23,7 +23,7 @@ const ChatScreen = (props: PropsChatScree) => {
         return (
           <AppText
             lbl={"Chat Screen"}
-            lblStyle={{ color: appColors.orange, fontSize: 25 }}
+            lblStyle={{ color: appColors.purple, fontSize: 25 }}
           />
         );
       },

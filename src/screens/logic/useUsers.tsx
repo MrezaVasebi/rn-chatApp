@@ -19,8 +19,6 @@ export const useUsers = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [showLoadingModal, setShowLoadingModal] = useState<boolean>(false);
-
   useEffect(() => {
     getAllUsers();
   }, []);
@@ -35,7 +33,6 @@ export const useUsers = () => {
   }, [msg]);
 
   const handleLogout = async () => {
-    // setShowLoadingModal(true);
     await auth()
       .signOut()
       .then((response) => {
@@ -47,9 +44,7 @@ export const useUsers = () => {
       .catch((err) => {
         // utility.logValue("logout error 37: ", err);
       })
-      .finally(() => {
-        // setShowLoadingModal(false);
-      });
+      .finally(() => {});
   };
 
   const getAllUsers = async () => {
@@ -73,7 +68,6 @@ export const useUsers = () => {
     users,
     loading,
     msgStatus,
-    showLoadingModal,
   };
 
   return {
