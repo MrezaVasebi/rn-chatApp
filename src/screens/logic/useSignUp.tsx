@@ -32,17 +32,7 @@ export const useSignUp = () => {
   };
 
   const handleSignUp = async () => {
-    let isValid = true;
-    let fields = { name, email, password };
-    for (const key in fields) {
-      if (!utility.validateFields(fields[key as keyof typeof fields])) {
-        isValid = false;
-      }
-
-      if (!isValid) break;
-    }
-
-    if (!isValid) {
+    if (!utility.validateObjectField({ name, email, password })) {
       setMsg("Some input value is wrong.");
       return;
     } else {
