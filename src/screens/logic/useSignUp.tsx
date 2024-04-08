@@ -64,7 +64,7 @@ export const useSignUp = () => {
               setMsg("That email address is invalid!");
           });
       } catch (error) {
-        // console.log("70: ", error);
+        console.log("error in signup:", error);
       } finally {
         setLoading(false);
       }

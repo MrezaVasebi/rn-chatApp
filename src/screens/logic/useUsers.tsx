@@ -1,10 +1,11 @@
 import auth from "@react-native-firebase/auth";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
-import { Firestore } from "classes";
+import { Firestore, Utility } from "classes";
 import { UserContext } from "context-api";
 import { useContext, useEffect, useState } from "react";
 
 export const useUsers = () => {
+  const utility = new Utility();
   const userCtx = useContext(UserContext);
 
   const firestoreIns = new Firestore();
@@ -42,24 +43,28 @@ export const useUsers = () => {
         // userCtx.handleSetUser(null);
       })
       .catch((err) => {
-        // utility.logValue("logout error 37: ", err);
+        utility.logValue("logout error:", err);
       })
       .finally(() => {});
   };
 
   const getAllUsers = async () => {
     setLoading(true);
-    let users = await firestoreIns.getAllDocsOfCollection("users");
+    try {
+      let users = await firestoreIns.getAllDocsOfCollection("users");
 
-    // do not show the users who has logged in.
-    let others = [];
-    if (users.length !== 0) {
-      for (const iterator of users) {
-        if (iterator.id !== loggedInUser?.uid) others.push(iterator);
+      // do not show the users who has logged in.
+      let others = [];
+      if (users.length !== 0) {
+        for (const iterator of users) {
+          if (iterator.id !== loggedInUser?.uid) others.push(iterator);
+        }
+        setUsers(others);
       }
-
+    } catch (error) {
+      console.log("error in getting all users: ", error);
+    } finally {
       setLoading(false);
-      setUsers(others);
     }
   };
 

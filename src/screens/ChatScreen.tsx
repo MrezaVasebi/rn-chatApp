@@ -49,19 +49,23 @@ const ChatScreen = (props: PropsChatScree) => {
     );
 
     if (loggedInUser) {
-      const chatId =
-        selectedUid > loggedInUser?.uid
-          ? loggedInUser?.uid + "-" + selectedUid
-          : selectedUid + "-" + loggedInUser?.uid;
+      try {
+        const chatId =
+          selectedUid > loggedInUser?.uid
+            ? loggedInUser?.uid + "-" + selectedUid
+            : selectedUid + "-" + loggedInUser?.uid;
 
-      await firestore()
-        .collection("chats")
-        .doc(chatId)
-        .collection("messages")
-        .add({
-          ...userMsg,
-          createdAt: firestore.FieldValue.serverTimestamp(),
-        });
+        await firestore()
+          .collection("chats")
+          .doc(chatId)
+          .collection("messages")
+          .add({
+            ...userMsg,
+            createdAt: firestore.FieldValue.serverTimestamp(),
+          });
+      } catch (error) {
+        console.log("error in onSend messages: ", error);
+      }
     }
   }, []);
 
@@ -76,22 +80,26 @@ const ChatScreen = (props: PropsChatScree) => {
           ? loggedInUser.uid + "-" + selectedUid
           : selectedUid + "-" + loggedInUser.uid;
 
-      const msgResponse = await firestore()
-        .collection("chats")
-        .doc(chatId)
-        .collection("messages")
-        .orderBy("createdAt", "desc")
-        .get();
+      try {
+        const msgResponse = await firestore()
+          .collection("chats")
+          .doc(chatId)
+          .collection("messages")
+          .orderBy("createdAt", "desc")
+          .get();
 
-      if (msgResponse.size !== 0) {
-        const allMsgs = msgResponse.docs.map((docSnap) => {
-          return {
-            ...docSnap.data(),
-            createdAt: docSnap.data().createdAt.toDate(),
-          };
-        });
+        if (msgResponse.size !== 0) {
+          const allMsgs = msgResponse.docs.map((docSnap) => {
+            return {
+              ...docSnap.data(),
+              createdAt: docSnap.data().createdAt.toDate(),
+            };
+          });
 
-        setMessages(allMsgs);
+          setMessages(allMsgs);
+        }
+      } catch (error) {
+        console.log("error in getting all messages: ", error);
       }
     }
   }

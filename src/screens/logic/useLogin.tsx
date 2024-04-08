@@ -44,6 +44,7 @@ export const useLogin = () => {
             setMsg("User not found.");
           });
       } catch (error) {
+        console.log("error in login: ", error);
       } finally {
         setLoading(false);
       }
