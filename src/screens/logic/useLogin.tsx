@@ -1,10 +1,13 @@
-import { Utility } from "classes";
-import { useEffect, useState } from "react";
+import { AsyncStorageClass, Utility } from "classes";
+import { useContext, useEffect, useState } from "react";
 
 import auth from "@react-native-firebase/auth";
+import { UserContext } from "context-api";
 
 export const useLogin = () => {
   const utility = new Utility();
+  const storage = new AsyncStorageClass();
+  const { handleSetUser } = useContext(UserContext);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -39,7 +42,16 @@ export const useLogin = () => {
           // sign in with created user email and password
           .signInWithEmailAndPassword(email, password)
           .then((response) => {
-            // console.log("User logged in.", response);
+            handleSetUser(response.user); // save user info in contextApi
+
+            // ts for after one hour
+            const ts: number = new Date().getTime() + 1 * 60 * 60 * 1000;
+
+            storage.storeData({
+              email,
+              password,
+              ts,
+            });
           })
           .catch((error: any) => {
             setMsg("User not found.");

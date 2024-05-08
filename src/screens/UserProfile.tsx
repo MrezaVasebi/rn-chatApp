@@ -1,29 +1,27 @@
 import { MainScreen } from "@/components";
 import { AppText } from "@/components/texts";
 import { MaterialIcons } from "@expo/vector-icons";
-import auth from "@react-native-firebase/auth";
 import React, { useLayoutEffect } from "react";
-import { View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity, View } from "react-native";
 import { appColors } from "utility";
 import { PropsUserProfile } from "./RootStack";
+import { useUserProfile } from "./logic";
 
 const UserProfile = (props: PropsUserProfile) => {
   let { navigation, route } = props;
-  let currentUser = auth().currentUser;
+  const { handleLogout, currentUser } = useUserProfile();
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
         return (
-          <View style={{}}>
-            <TouchableOpacity
-              onPress={handleLogout}
-              style={{ marginRight: 15 }}
-            >
-              <MaterialIcons name="logout" size={25} color={appColors.purple} />
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={handleLogout}
+            style={{ marginRight: 15 }}
+          >
+            <MaterialIcons name="logout" size={25} color={appColors.purple} />
+          </TouchableOpacity>
         );
       },
       headerTitle: () => {
@@ -32,18 +30,6 @@ const UserProfile = (props: PropsUserProfile) => {
       headerShown: true,
     });
   }, [navigation]);
-
-  const handleLogout = async () => {
-    await auth()
-      .signOut()
-      .then((response) => {
-        // utility.logValue("response in logging out: ", response);
-      })
-      .catch((err) => {
-        // utility.logValue("logout error 37: ", err);
-      })
-      .finally(() => {});
-  };
 
   const handleUserValues = (lbl: string, value: any) => {
     return (
