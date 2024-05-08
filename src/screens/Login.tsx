@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
     color: appColors.purple,
   },
   loginButtonLabel: {
+    width: 50,
     height: 45,
-    padding: 10,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",

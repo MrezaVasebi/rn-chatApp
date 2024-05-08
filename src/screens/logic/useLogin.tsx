@@ -36,6 +36,7 @@ export const useLogin = () => {
       setLoading(true);
       try {
         await auth()
+          // sign in with created user email and password
           .signInWithEmailAndPassword(email, password)
           .then((response) => {
             // console.log("User logged in.", response);

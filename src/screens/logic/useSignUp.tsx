@@ -39,11 +39,13 @@ export const useSignUp = () => {
       setLoading(true);
       try {
         await auth()
+          // create user with email and password
           .createUserWithEmailAndPassword(email, password)
           .then(async (response) => {
             const user = response.user;
 
             await firestoreIns
+              // create collection with specific doc id
               .onCreateCollectionWithDocId("users", user.uid, {
                 name: name,
                 email: user.email,

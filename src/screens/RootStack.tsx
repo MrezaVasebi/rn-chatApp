@@ -42,7 +42,7 @@ export type PropsUserProfile = NativeStackScreenProps<
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default function RootStack() {
-  const { user, handleSetUser } = useContext(UserContext);
+  const { user, handleSetUser } = useContext(UserContext); // save user info in contextApi
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -68,6 +68,7 @@ export default function RootStack() {
       screenOptions={{ headerShown: false }}
     >
       {!user ? (
+        // user logged out
         <>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen
@@ -82,6 +83,7 @@ export default function RootStack() {
           />
         </>
       ) : (
+        // user logged in
         <>
           <Stack.Screen name="Users" component={Users} />
           <Stack.Screen name="ChatScreen" component={ChatScreen} />

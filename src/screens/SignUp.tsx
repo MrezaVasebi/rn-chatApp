@@ -89,10 +89,13 @@ const styles = StyleSheet.create({
     color: appColors.purple,
   },
   signUpStyle: {
-    padding: 10,
+    width: 65,
+    height: 45,
     fontSize: 20,
     marginTop: 15,
     borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: appColors.purple,
   },
 });
